@@ -7,16 +7,20 @@ using namespace std;
 #include <stdio.h>
 
 Client::Client() {
-    this->setName("not set");
-    this->setSurname("not set");
+    this->name = new char[strlen("not set") + 1];
+    strcpy (this->name, "not set");
+    this->surname = new char[strlen("not set") + 1];
+    strcpy (this->surname, "not set");
     this->setFee(0);
     citizenID = -1;
     status = false;
 }
 
-Client::Client(const char* name, const char* surname, int citizenID, double fee) {
-    this->setName(name);
-    this->setSurname(surname);
+Client::Client(const char* name, const char* surname, long citizenID, double fee) {
+    this->name = new char[strlen(name) + 1];
+    strcpy (this->name, name);
+    this->surname = new char[strlen(surname) + 1];
+    strcpy (this->surname, surname);
     this->setFee(fee);
     this->setCitizenID(citizenID);
     status = false;
@@ -66,7 +70,7 @@ bool& Client::refStatus() {
     return status;
 }
 
-int& Client::refCitizenID() {
+long& Client::refCitizenID() {
     return citizenID;
 }
 
@@ -87,9 +91,9 @@ void Client::setFee(double fee) {
     else refFee() = fee;
 }
 
-void Client::setCitizenID(int citizenID) {
-    int number_of_digits = 0;
-    int n = citizenID;
+void Client::setCitizenID(long citizenID) {
+    long number_of_digits = 0;
+    long n = citizenID;
     if (citizenID <= 0) {
         cout << "No citizen ID is 0 or negative, please enter a correct citizen ID. " << endl;
     } else {

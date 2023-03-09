@@ -70,7 +70,7 @@ void FitnessClub::printClients() {
     cout << endl; 
 }
 
-void FitnessClub::printClient(int id) {
+void FitnessClub::printClient(long id) {
     Client* bob = clients->findNode(id);
     cout << "Searching for a client with the ID: " << id << endl;
     if (bob == nullptr) {
@@ -80,10 +80,10 @@ void FitnessClub::printClient(int id) {
 }
 
 void FitnessClub::printClientsWithNoEmployee() {
-    int client_amount = clients->getAmount();
+    long client_amount = clients->getAmount();
     cout << "The list of clients with no employees assigned to them registered at '" << club_name << "' Fitness Club located in '";
     cout << address << "':\n" << endl;
-    for(int i = 1; i <= client_amount; i++) {
+    for(long i = 1; i <= client_amount; i++) {
         if(clients->iterateToNthNodeObject(i).refStatus() == false){
             cout << "ID: " << clients->iterateToNthNodeID(i) << endl;
             cout << clients->iterateToNthNodeObject(i) << endl;
@@ -98,7 +98,7 @@ void FitnessClub::printEmployees() {
     cout << endl;
 }
 
-void FitnessClub::printEmployee(int id) {
+void FitnessClub::printEmployee(long id) {
     Employee* bob = employees->findNode(id);
     cout << "Searching for an employee with the ID: " << id << endl;
     if (bob == nullptr) {
@@ -108,10 +108,10 @@ void FitnessClub::printEmployee(int id) {
 }
 
 void FitnessClub::printEmployeesWithNoClients() {
-    int amount = employees->getAmount();
+    long amount = employees->getAmount();
     cout << "The list of employees with no clients assigned to them working at '" << club_name << "' Fitness Club located in '";
     cout << address << "':\n" << endl;
-    for (int i = 1; i <= amount; i++) {
+    for (long i = 1; i <= amount; i++) {
         if(employees->iterateToNthNodeObject(i).refClients().isEmpty()){
             cout << "ID: " << employees->iterateToNthNodeID(i) << endl;
             cout << employees->iterateToNthNodeObject(i) << endl;
@@ -119,8 +119,8 @@ void FitnessClub::printEmployeesWithNoClients() {
     }
 }
 
-bool FitnessClub::insertClient(const char* name, const char* surname, int citizenID, double fee) {
-    for (int i = 1; i <= clients->getAmount(); i++) {
+bool FitnessClub::insertClient(const char* name, const char* surname, long citizenID, double fee) {
+    for (long i = 1; i <= clients->getAmount(); i++) {
         if (clients->iterateToNthNodeObject(i).refCitizenID() == citizenID) {
             cout << "A client with such a citizen ID (" << citizenID << ") is already on the list. Please check if ";
             cout << "you have entered it correctly" << endl << endl;
@@ -132,8 +132,8 @@ bool FitnessClub::insertClient(const char* name, const char* surname, int citize
     return clients->insertNode(bob);
 }
 
-bool FitnessClub::insertClient(const char* name, const char* surname, int citizenID, double fee, int employeeID) {
-    for (int i = 1; i <= clients->getAmount(); i++) {
+bool FitnessClub::insertClient(const char* name, const char* surname, long citizenID, double fee, long employeeID) {
+    for (long i = 1; i <= clients->getAmount(); i++) {
         if (clients->iterateToNthNodeObject(i).refCitizenID() == citizenID) {
             cout << "A client with such a citizen ID (" << citizenID << ") is already on the list. Please check if ";
             cout << "you have entered it correctly" << endl << endl;
@@ -151,20 +151,21 @@ bool FitnessClub::insertClient(const char* name, const char* surname, int citize
     return false;
 }
 
-bool FitnessClub::insertEmployee(const char* name, const char* surname, int citizenID, double salary) {
-    for (int i = 1; i <= employees->getAmount(); i++) {
+bool FitnessClub::insertEmployee(const char* name, const char* surname, long citizenID, double salary) {
+    for (long i = 1; i <= employees->getAmount(); i++) {
         if (employees->iterateToNthNodeObject(i).refCitizenID() == citizenID) {
             cout << "An employee with such a citizen ID (" << citizenID << ") is already on the list. Please check if ";
             cout << "you have entered it correctly" << endl << endl;
             return false;
         }
     }
-
+    
     Employee* bob = new Employee(name, surname, citizenID, salary);
-    return employees->insertNode(bob);
+    employees->insertNode(bob);
+    return true;
 }
 
-bool FitnessClub::assignClientToEmployee(int clientID, int employeeID) {
+bool FitnessClub::assignClientToEmployee(long clientID, long employeeID) {
     Employee* bob = employees->findNode(employeeID);
     Client* bobby = clients->findNode(clientID);
 
@@ -176,6 +177,10 @@ bool FitnessClub::assignClientToEmployee(int clientID, int employeeID) {
         } else if (bobby->refStatus() == true) {
             cout << "Assignment of a client to the employee failed. \n";
             cout << "A client with such an id is already trained by another employee. \n" << endl;
+            return false;
+        } else if (bob->refCitizenID() == bobby->refCitizenID()) {
+            cout << "Assignment of a client to the employee failed. \n";
+            cout << "A client cannot be trained by themselves. \n" << endl;
             return false;
         }
         cout << "Assigning client with id: " << clientID;
@@ -191,62 +196,66 @@ bool FitnessClub::assignClientToEmployee(int clientID, int employeeID) {
 }
 
 bool FitnessClub::automaticallyAssignClients(){
-    int client_amount = clients->getAmount();
-    int employee_amount = employees->getAmount();
-    for(int i = 1; i <= client_amount; i++) {
+    long client_amount = clients->getAmount();
+    long employee_amount = employees->getAmount();
+    for(long i = 1; i <= client_amount; i++) {
         if(clients->iterateToNthNodeObject(i).refStatus() == false){
-            int min = employees->iterateToNthNodeObject(1).refClients().getAmount();
-            int min_n = 1;
-            for (int j = 1; j <= employee_amount; j++) {
-                if (employees->iterateToNthNodeObject(j).refClients().getAmount() <= min) {
+            long min = employees->iterateToNthNodeObject(1).refClients().getAmount();
+            long min_n = 1;
+            for (long j = 1; j <= employee_amount; j++) {
+                if (employees->iterateToNthNodeObject(j).refClients().getAmount() <= min 
+                && employees->iterateToNthNodeObject(j).refCitizenID() != clients->iterateToNthNodeObject(i).refCitizenID()) {
                     min = employees->iterateToNthNodeObject(j).refClients().getAmount();
                     min_n = j;
                 }
             }
-            int emp_id = employees->iterateToNthNodeID(min_n);
-            int client_id = clients->iterateToNthNodeID(i);
+            long emp_id = employees->iterateToNthNodeID(min_n);
+            long client_id = clients->iterateToNthNodeID(i);
             assignClientToEmployee(client_id, emp_id);
         }
     }
     return true;
 }
 
-bool FitnessClub::unassignClientFromEmployee(int clientID, int employeeID) {
-    Employee* bob = employees->findNode(employeeID);
-    Client* bobby = clients->findNode(clientID);
+bool FitnessClub::unassignClientFromEmployee(long clientID, long employeeID) {
+    Employee* trainer = employees->findNode(employeeID);
+    Client* trainee = clients->findNode(clientID);
 
-    if (bob && bobby) {
-        if (!bob->refClients().findNode(clientID)) {
+    if (trainer && trainee) {
+        if (!trainer->refClients().findNode(clientID)) {
             cout << "Unassignment of a client from the employee failed. \n";
             cout << "A client with such an id is not trained by this employee. \n" << endl;
             return false;
         }
         cout << "Unassinging client with id: " << clientID;
         cout << " from employee with id: " << employeeID << endl << endl;
-        bob->removeClient(clientID);
-        bobby->setStatus(false);
+        trainer->refClients().removeNode(clientID);
+        trainee->setStatus(false);
         return true;
     } else {
-        cout << "Unassignment of a client with id: " << clientID << "to the employee with id: " << employeeID << " failed. \n";
+        cout << "Unassignment of a client with id: " << clientID << " to the employee with id: " << employeeID << " failed. \n";
         cout << "Either the client ID and/or the employee ID is wrong. \n"<< endl;
         return false;
     }
 }
 
-bool FitnessClub::removeClient(int id) {
+bool FitnessClub::removeClient(long id) {
     cout << "Trying to remove the client with the ID: " << id << endl;
-    int employee_amount = employees->getAmount();
+    long employee_amount = employees->getAmount();
+    Client* must_delete = clients->findNode(id);
     
-    if (clients->findNode(id)){
+    if (must_delete){
 
-        for (int j = 1; j <= employee_amount; j++) {
+        for (long j = 1; j <= employee_amount; j++) {
             if (employees->iterateToNthNodeObject(j).refClients().findNode(id)) {
                 unassignClientFromEmployee(id, employees->iterateToNthNodeID(j));
             }
         }
 
+        delete must_delete;
 
         if (clients->removeNode(id) == true) {
+            
             cout << "The above client has been succesfully removed from the database.\n" << endl;
             cout << endl;
             return true;
@@ -258,18 +267,20 @@ bool FitnessClub::removeClient(int id) {
     return false;
 }
 
-bool FitnessClub::removeEmployee(int id) {
+bool FitnessClub::removeEmployee(long id) {
     cout << "Trying to remove the employee with the ID: " << id << endl;
     Employee* bob = employees->findNode(id);
 
     if (bob) {
-        for (int i = 0; i <= bob->refClients().getAmount(); i++) {
+        for (long i = 1; i <= bob->refClients().getAmount(); i++) {
             
-            int left_client_id = bob->refClients().iterateToNthNodeID(i);
+            long left_client_id = bob->refClients().iterateToNthNodeID(i);
 
             unassignClientFromEmployee(left_client_id, id);
         }
         employees->removeNode(id);
+        delete bob;
+        
         cout << "The above employee has been succesfully removed from the database." << endl;
         cout << endl;
         return true;
@@ -280,35 +291,35 @@ bool FitnessClub::removeEmployee(int id) {
     }
 }
 
-int FitnessClub::clientAmount() {
+long FitnessClub::clientAmount() {
     return clients->getAmount();
 }
 
-int FitnessClub::clientMaxAmount() {
+long FitnessClub::clientMaxAmount() {
     return clients->getMaxAmount();
 }
 
-int FitnessClub::employeeAmount() {
+long FitnessClub::employeeAmount() {
     return employees->getAmount();
 }
 
-int FitnessClub::employeeMaxAmount() {
+long FitnessClub::employeeMaxAmount() {
     return employees->getMaxAmount();
 }
 
 double FitnessClub::clientFees() { // private
-    int amount = clients->getAmount();
+    long amount = clients->getAmount();
     double fees = 0;
-    for (int i = 1; i <= amount; i++) {
+    for (long i = 1; i <= amount; i++) {
         fees += clients->iterateToNthNodeObject(i).refFee();
     }
     return fees;
 }
 
 double FitnessClub::employeeSalaries() { // private
-    int amount = employees->getAmount();
+    long amount = employees->getAmount();
     double salaries = 0;
-    for (int i = 1; i <= amount; i++) {
+    for (long i = 1; i <= amount; i++) {
         salaries += employees->iterateToNthNodeObject(i).refSalary();
     }
     return salaries;
@@ -330,13 +341,13 @@ void FitnessClub::printFinancialInfo() {
 }
 
 void FitnessClub::printEmployeeWorth() {
-    int amount = employees->getAmount();
+    long amount = employees->getAmount();
     cout << "The list showing the worth that each employee brings to the club by training their clients:\n" << endl;
-    for (int i = 1; i <= amount; i++) {
+    for (long i = 1; i <= amount; i++) {
         Employee* bob = &employees->iterateToNthNodeObject(i);
-        int client_amount = bob->refClients().getAmount();
+        long client_amount = bob->refClients().getAmount();
         double worth = 0;
-        for (int j = 1; j <= client_amount; j++) {
+        for (long j = 1; j <= client_amount; j++) {
             worth += bob->refClients().iterateToNthNodeObject(j).refFee();
         }
 
@@ -348,34 +359,40 @@ void FitnessClub::printEmployeeWorth() {
     }
 }
 
-bool FitnessClub::changeClientName(int id, const char* name) {
+bool FitnessClub::changeClientName(long id, const char* name) {
     Client* bob = clients->findNode(id);
     if (bob) {
         bob->setName(name);
         return true;
-    } else return false;
+    } else {
+        cout << "No such client found\n\n";
+        return false;
+    }
 }
 
-bool FitnessClub::changeClientSurname(int id, const char* surname) {
+bool FitnessClub::changeClientSurname(long id, const char* surname) {
     Client* bob = clients->findNode(id);
     if (bob) {
         bob->setSurname(surname);
         return true;
-    } else return false;
+    } else {
+        cout << "No such client found\n\n";
+        return false;
+    }
 }
 
-bool FitnessClub::changeClientCitizenID(int id, int citizenID) {
-    int amount = clients->getAmount();
+bool FitnessClub::changeClientCitizenID(long id, long citizenID) {
+    long amount = clients->getAmount();
 
     if (!clients->findNode(id)) {
         cout << "Client with such an id: " << id << " was not found on the fitness club list. " << endl;
         return false;
     }
 
-    for (int i = 1; i <= amount; i++) {
-        if (employees->iterateToNthNodeObject(i).refCitizenID() == citizenID) {
-            cout << "The attempt to change the citizen id of the client with fitness club id: " << id << "failed." << endl;
-            cout << "There already exists an client with such a citizen id on the fitness club list. " << endl;
+    for (long i = 1; i <= amount; i++) {
+        if (clients->iterateToNthNodeObject(i).refCitizenID() == citizenID) {
+            cout << "The attempt to change the citizen id of the client with fitness club id: " << id << " failed." << endl;
+            cout << "There already exists an client with such a citizen id on the fitness club list. " << endl << endl;
             return false;
         }
     }
@@ -384,15 +401,18 @@ bool FitnessClub::changeClientCitizenID(int id, int citizenID) {
     return true;
 }
 
-bool FitnessClub::changeClientFee(int id, double fee) {
+bool FitnessClub::changeClientFee(long id, double fee) {
     Client* bob = clients->findNode(id);
     if (bob) {
         bob->setFee(fee);
         return true;
-    } else return false;
+    } else {
+        cout << "No such client found\n\n";
+        return false;
+    }
 }
 
-bool FitnessClub::changeClientMaxAmount(int max_amount) {
+bool FitnessClub::changeClientMaxAmount(long max_amount) {
     if (clients->getAmount() > max_amount) {
         cout << "The amount of clients on the list is greater than the given maximum amount or ";
         cout << "the given maximum amount is negative. " << endl;
@@ -405,34 +425,40 @@ bool FitnessClub::changeClientMaxAmount(int max_amount) {
     }
 }
 
-bool FitnessClub::changeEmployeeName(int id, const char* name) {
+bool FitnessClub::changeEmployeeName(long id, const char* name) {
     Employee* bob = employees->findNode(id);
     if (bob) {
         bob->setName(name);
         return true;
-    } else return false;
+    } else {
+        cout << "No such client found\n\n";
+        return false;
+    }
 }
 
-bool FitnessClub::changeEmployeeSurname(int id, const char* surname) {
+bool FitnessClub::changeEmployeeSurname(long id, const char* surname) {
     Employee* bob = employees->findNode(id);
     if (bob) {
         bob->setSurname(surname);
         return true;
-    } else return false;
+    } else {
+        cout << "No such client found\n\n";
+        return false;
+    }
 }
 
-bool FitnessClub::changeEmployeeCitizenID(int id, int citizenID) {
-    int amount = employees->getAmount();
+bool FitnessClub::changeEmployeeCitizenID(long id, long citizenID) {
+    long amount = employees->getAmount();
 
     if (!employees->findNode(id)) {
         cout << "Employee with such an id: " << id << " was not found on the fitness club list. " << endl;
         return false;
     }
 
-    for (int i = 0; i <= amount; i++) {
+    for (long i = 0; i <= amount; i++) {
         if (employees->iterateToNthNodeObject(i).refCitizenID() == citizenID) {
-            cout << "The attempt to change the citizen id of the employee with fitness club id: " << id << "failed." << endl;
-            cout << "There already exists an employee with such a citizen id on the fitness club list. " << endl;
+            cout << "The attempt to change the citizen id of the employee with fitness club id: " << id << " failed." << endl;
+            cout << "There already exists an employee with such a citizen id on the fitness club list. " << endl << endl;
             return false;
         }
     }
@@ -441,15 +467,18 @@ bool FitnessClub::changeEmployeeCitizenID(int id, int citizenID) {
     return true;
 }
 
-bool FitnessClub::changeEmployeeSalary(int id, double salary) {
+bool FitnessClub::changeEmployeeSalary(long id, double salary) {
     Employee* bob = employees->findNode(id);
     if (bob) {
         bob->setSalary(salary);
         return true;
-    } else return false;
+    } else {
+        cout << "No such client found\n\n";
+        return false;
+    }
 }
 
-bool FitnessClub::changeEmployeeMaxAmount(int max_amount) {
+bool FitnessClub::changeEmployeeMaxAmount(long max_amount) {
     if (employees->getAmount() > max_amount) {
         cout << "The amount of employees on the list is greater than the given maximum amount or ";
         cout << "the given maximum amount is negative. " << endl;

@@ -15,7 +15,7 @@ class Client {
         char* surname;
         /* Surname of the client. */
 
-        int citizenID;
+        long citizenID;
         /* Citizen ID of the client. 
         No two clients should have the same citizen id. */
 
@@ -33,7 +33,7 @@ class Client {
         /* Default constructor of Client, should set name and surname to "not set" 
         and fee to 0. */
 
-        Client(const char* name, const char* surname, int citizenID, double fee=0);
+        Client(const char* name, const char* surname, long citizenID, double fee=0);
         /* Defined constructor of Client. Should create a Client with attributes as the 
         given values. As long as they fulfill the attribute conditions, else print warning */
 
@@ -53,7 +53,7 @@ class Client {
         char*& refSurname();
         /* Returns a refference to the client's surname. */
 
-        int& refCitizenID();
+        long& refCitizenID();
         /* Returns a refference to the clients citizen ID. */
 
         double& refFee();
@@ -68,7 +68,7 @@ class Client {
         void setSurname(const char* surname);
         /* Setter method for the client's surname. */
 
-        void setCitizenID(int citizenID);
+        void setCitizenID(long citizenID);
         /* Setter for the employee's citizen id. */
 
         void setFee(double fee);

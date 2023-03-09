@@ -7,17 +7,21 @@
 #include <iostream>
 
 Employee::Employee() {
-    this->setName("not set");
-    this->setSurname("not set");
+    this->name = new char[strlen("not set") + 1];
+    strcpy (this->name, "not set");
+    this->surname = new char[strlen("not set") + 1];
+    strcpy (this->surname, "not set");
     this->citizenID = -1;
     this->setSalary(0);
     List<Client>* clients = new List<Client>();
     this->clients = clients;
 }
 
-Employee::Employee(const char* name, const char* surname, int citizenID, double salary) {
-    setName(name);
-    setSurname(surname);
+Employee::Employee(const char* name, const char* surname, long citizenID, double salary) {
+    this->name = new char[strlen(name) + 1];
+    strcpy (this->name, name);
+    this->surname = new char[strlen(surname) + 1];
+    strcpy (this->surname, surname);
     setCitizenID(citizenID);
     setSalary(salary);
     this->clients = new List<Client>();
@@ -55,7 +59,7 @@ char*& Employee::refSurname() {
     return surname;
 }
 
-int& Employee::refCitizenID() {
+long& Employee::refCitizenID() {
     return citizenID;
 }
 
@@ -79,7 +83,7 @@ void Employee::setSurname(const char* surname) {
     strcpy (this->surname, surname);
 }
 
-bool Employee::setCitizenID(int citizenID) {
+bool Employee::setCitizenID(long citizenID) {
     if (citizenID <= 0) {
         cout << "No citizen ID is 0 or negative, please enter a correct citizen ID" << endl;
         return false;
@@ -98,13 +102,13 @@ void Employee::setClientList(List<Client> clients) {
     refClients() = clients;
 }
 
-void Employee::addClient(Client* bob, int id) {
+void Employee::addClient(Client* bob, long id) {
     if (refClients().insertNode(bob, id)){
         refClients().findNode(id)->setStatus(true);
     }
 }
 
-void Employee::removeClient(int idClient) {
+void Employee::removeClient(long idClient) {
     refClients().findNode(idClient)->setStatus(false);
     refClients().removeNode(idClient);
 }

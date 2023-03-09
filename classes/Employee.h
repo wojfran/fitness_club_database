@@ -11,7 +11,7 @@ class Employee {
         char* surname;
         /* Surname of the employee. */
 
-        int citizenID;
+        long citizenID;
         /* Citizen ID of the employee. 
         No two employees should have the same citizen id. */
 
@@ -30,7 +30,7 @@ class Employee {
         /* Default constructor of Employee, should set name and surname to "not set" 
         and fee to 0. */
 
-        Employee(const char* name, const char* surname, int citizenID, double salary=0);
+        Employee(const char* name, const char* surname, long citizenID, double salary=0);
         /* Defined constructor of Employee. Should create an Employee with attributes as the 
         given values as long as they fulfill the attribute conditions, else print warning. The 
         clients list should be also initialized but left empty. */
@@ -46,7 +46,7 @@ class Employee {
         char*& refSurname();
         /* Returns a refference to the employee's surname. */
 
-        int& refCitizenID();
+        long& refCitizenID();
         /* Returns a refference to the employee's citizen ID. */
 
         double& refSalary();
@@ -62,7 +62,7 @@ class Employee {
         void setSurname(const char* x);
         /* Setter method for the employee's surname. */
 
-        bool setCitizenID(int citizenID);
+        bool setCitizenID(long citizenID);
         /* Setter for the employee's citizen id. */
 
         void setSalary(double x);
@@ -75,13 +75,13 @@ class Employee {
         should use the overloaded assignment operator of the List template class to delete
         the previous list stored in the clients attribute and assign to it x. */
 
-        void addClient(Client* bob, int id);
+        void addClient(Client* bob, long id);
         /* Method which inserts a client into the employee client list and gives it a given id
         the method doesn't check if the client is already on the list as its a helper method
         to the FitnessClub::assignClientToEmployee method. All the necesary checks are performed
         there or in the List<T>::insertNode method of the list class. */
 
-        void removeClient(int idClient);
+        void removeClient(long idClient);
         /* Method which removes a client from the employee client list. It doesn't check if 
         a client with such an id exists on the list as it is a helper method. to the 
         FitnessClub::assignClientToEmployee method. All the necesary checks are performed

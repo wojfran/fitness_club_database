@@ -87,7 +87,7 @@ class FitnessClub {
         /* A method printing the list of clients. It should print all of the attributes of the
         Client class, as well as the id of the node storing each client object. */
 
-        void printClient(int id);
+        void printClient(long id);
         /* A method printing the data about a specific client. It should print all of the 
         attributes of the Client class, as well as the id of the node storing the client 
         object (despite it being given as an argument, as it will simply increase readability).*/
@@ -100,7 +100,7 @@ class FitnessClub {
         /* A method printing the list of employees. It should print all of the attributes of the
         Employee class, as well as the id of the node storing each employee object. */
 
-        void printEmployee(int id);
+        void printEmployee(long id);
         /* A method printing the data about a specific employee. It should print all of the 
         attributes of the Employee class, as well as the id of the node storing the employee 
         object (despite it being given as an argument, as it will simply increase readability).*/
@@ -109,24 +109,24 @@ class FitnessClub {
         /* A method that prints all of the employees of the fitness club employee list along with their
         IDs who do not have any client assigned to them. */
 
-        int clientAmount();
+        long clientAmount();
         /* Method returning the amount of clients registered in the fitness club's client list. */
 
-        int clientMaxAmount();
+        long clientMaxAmount();
         /* Method returning the amount of clients that can be registered in the fitness club's client list. */
 
-        int employeeAmount();
+        long employeeAmount();
         /* Method returning the amount of employees registered in the fitness club's employee list. */
 
-        int employeeMaxAmount();
+        long employeeMaxAmount();
         /* Method returning the max amount of employees that can be registered in the fitness club's employee list. */
 
-        bool insertClient(const char* name, const char* surname, int citizenID, double fee=0);
+        bool insertClient(const char* name, const char* surname, long citizenID, double fee=0);
         /* This method inserts new client to the client list of the fitness club. 
         Based on the given attributes it should first create a new client object 
         and then insert it into the client list. */
 
-        bool insertClient(const char* name, const char* surname, int citizenID, double fee, int idEmployee);
+        bool insertClient(const char* name, const char* surname, long citizenID, double fee, long idEmployee);
         /* This method inserts new client to the client list of the fitness club.
         and immediately assigns it to an employee with the given id if possible. 
         Based on the given attributes it should first create a new client object 
@@ -135,12 +135,12 @@ class FitnessClub {
         be printed informaing the user that the client has been added to the client 
         list with no employee assigned. */
 
-        bool insertEmployee(const char* name, const char* surname, int citizenID, double salary=0);
+        bool insertEmployee(const char* name, const char* surname, long citizenID, double salary=0);
         /* This method inserts new employee to the employee list of the fitness club. 
         Based on the given attributes it should first create a new employee object 
         and then insert it into the employee list.*/
 
-        bool assignClientToEmployee(int clientID, int employeeID);
+        bool assignClientToEmployee(long clientID, long employeeID);
         /* This method assigns a client with the given client id to an employee with 
         the given emplyoee id. It returns false if a client with such an id already is
         assigned to the employee with the given id or is already trained by another 
@@ -160,7 +160,7 @@ class FitnessClub {
         the employees on the fitness club's employee list has the least amount of clients
         and assigns the client to that employee.*/;
 
-        bool unassignClientFromEmployee(int clientID, int employeeID);
+        bool unassignClientFromEmployee(long clientID, long employeeID);
         /* This metod unassigns a cient from an employee training them. It returns false if 
         a client with the given id is not trained by the employee with the given id or if either
         one of the given ids is wrong. In both cases it prints a warning informing the user of 
@@ -168,12 +168,12 @@ class FitnessClub {
         uses the Emplyoee::removeClient method to remove him from that list and sets the client's 
         status attribute to false, signifying that they are no longer being trained by any employee. */
 
-        bool removeClient(int id);
+        bool removeClient(long id);
         /* Method which removes a client from the client list. It should use the remove node method from
         the List class. If no client with such an id exists print a warning infromation and return false, else
         it should remove the client and return true. */
 
-        bool removeEmployee(int id);
+        bool removeEmployee(long id);
         /* Method which removes an employee from the employee list. It should use the remove node method from
         the List class. If no employee with such an id exists print a warning infromation and return false, else
         it should remove the employee and return true. */
@@ -194,15 +194,15 @@ class FitnessClub {
         // Configuration methods, should be used primarily for correction of mistakes rather than casual operation of the 
         // system:
 
-        bool changeClientName(int id, const char* name);
+        bool changeClientName(long id, const char* name);
         /* Method which which should change the name of the client with the given id to the given name. Returns true 
         if succesfful, returns false if client with such an id doesnt exist. */
 
-        bool changeClientSurname(int id, const char* surname);
+        bool changeClientSurname(long id, const char* surname);
         /* Method which which should change the surname of the client with the given id to the given surname. Returns 
         true if succesfful, returns false if client with such an id doesnt exist.  */
 
-        bool changeClientCitizenID(int id, int citizenID);
+        bool changeClientCitizenID(long id, long citizenID);
         /* Method which should change the citizen id of the client with the given fitness club id. 
         Note that id is the id of the client on the fitness club list and the citizen id is their national id number.
         It should return false if :
@@ -210,25 +210,25 @@ class FitnessClub {
             - the citizen id format is wrong i.e. not 9 digits
         It returns true otherwise signifying that the change was successful. */
 
-        bool changeClientFee(int id, double fee);
+        bool changeClientFee(long id, double fee);
         /* Method which should change the membership fee paid by the client with the given id to the given fee. Returns 
         true if succesfful, returns false if client with such an id doesnt exist. */
 
-        bool changeClientMaxAmount(int max_amount);
+        bool changeClientMaxAmount(long max_amount);
         /* Method which should change the maximum amount of clients on the client list. If the amount of clients 
         currently inserted into the fitness club's client list is greater than the given max amount or the max amount is
         negative, it prints a warning explaining what is wrong and reutrns false, else it changes the maximum amount to 
         the one given and returns true. */
 
-        bool changeEmployeeName(int id, const char* name);
+        bool changeEmployeeName(long id, const char* name);
         /* Method which which should change the name of the employee with the given id to the given name, Returns true 
         if succesfful, returns false if employee with such an id doesnt exist.  */
 
-        bool changeEmployeeSurname(int id, const char* surname);
+        bool changeEmployeeSurname(long id, const char* surname);
         /* Method which which should change the surname of the employee with the given id to the given surname. Returns 
         true if succesfful, returns false if employee with such an id doesnt exist. */
 
-        bool changeEmployeeCitizenID(int id, int citizenID);
+        bool changeEmployeeCitizenID(long id, long citizenID);
         /* Method which should change the citizen id of the employee with the given fitness club id. 
         Note that id is the id of the employee on the fitness club list and the citizen id is their national id number.
         It should return false if :
@@ -236,11 +236,11 @@ class FitnessClub {
             - the citizen id format is wrong i.e. not 9 digits
         It returns true otherwise signifying that the change was successful. */
 
-        bool changeEmployeeSalary(int id, double salary);
+        bool changeEmployeeSalary(long id, double salary);
         /* Method which should change the salary paid to the employee with the given id to the given salary value. Returns 
         true if succesfful, returns false if employee with such an id doesnt exist. */
 
-        bool changeEmployeeMaxAmount(int max_amount);
+        bool changeEmployeeMaxAmount(long max_amount);
         /* Method which should change the maximum amount of employees on the employee list. If the amount of employees 
         currently inserted into the fitness club's employee list is greater than the given max amount or the max amount is
         negative, it prints a warning explaining what is wrong and reutrns false, else it changes the maximum amount to 

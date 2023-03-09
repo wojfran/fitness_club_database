@@ -66,10 +66,4 @@ int main() {
 
 
     delete myclub;
-    // delete mylist;
-
-
-    // to do
-
-    // method that automatically assigns clients with no trainer to trainers with the least clients?
 }

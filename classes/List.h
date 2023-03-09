@@ -21,7 +21,7 @@ class List {
             long id;
             /* Id of the node. Used to distinguish objects on the list. 
             Cannot be less than 1 and should be given based on the class
-            attribute static int id or an explicitly given id number in
+            attribute static long id or an explicitly given id number in
             the insertNode method. */
         };
         
@@ -42,8 +42,8 @@ class List {
         newly created node. */
 
         void removeAllElements();
-        /* Private method which deleted all nodes of the list. It must ensure that 
-        no memory leaks occur. */
+        /* Private method which deleted all nodes of the list along with the objects
+        pointed to by the data pointer. */
 
     public:
         List();
@@ -78,7 +78,7 @@ class List {
         T& iterateToNthNodeObject(long n);
         /* Method which passes through n nodes starting from the head node and 
         returns the nth one. Useful for for loops and overall iteration. 
-        Warning: int n does not signify the id of the node which will be returned. */
+        Warning: long n does not signify the id of the node which will be returned. */
 
         long iterateToNthNodeID(long n);
         /* Method which passes through n nodes starting from the head node and 
@@ -97,6 +97,8 @@ class List {
         If the node can be removed the amount is decreased by 1. */
 
         void softDelete();
+        /* A copy of removeAllElements, this method, however, doesn't delete the objects pointed to by 
+        the pointers stored in the data attribute of each node. */
 
         void printList() const;
         /* Method which iterates over each node in the list, printing its node id along with
@@ -184,9 +186,9 @@ bool List<T>::insertNode(T* x, long id) {
         etr->next = head;
         etr->id = id;
 
-        if (strcmp(typeid(x).name(), "6Client") == 0) {
+        if (strcmp(typeid(*x).name(), "6Client") == 0) {
             cout << "A client with the following id has been added: " << id << endl << endl;
-        } else if (strcmp(typeid(x).name(), "8Employee") == 0 ) {
+        } else if (strcmp(typeid(*x).name(), "8Employee") == 0 ) {
             cout << "An employee with the following id has been added: " << id << endl << endl;
         } else cout << "A node with the following id has been added: " << id << endl << endl;
         
@@ -202,8 +204,6 @@ bool List<T>::insertNode(T* x, long id) {
     }
 }
 
-// what about a case where there are fe clients with the same 
-// name surname and fee?
 template <typename T>
 long List<T>::giveListID() {
     return id;
